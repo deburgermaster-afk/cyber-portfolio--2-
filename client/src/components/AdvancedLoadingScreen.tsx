@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { trpc } from '@/lib/trpc';
 
 interface VisitorInfo {
   ip: string;
@@ -44,31 +43,100 @@ const TerminalLine = ({ text, delay, color = 'text-green-400' }: { text: string;
   );
 };
 
+// Fetch visitor info directly from public APIs (client-side)
+async function fetchVisitorInfo(): Promise<VisitorInfo> {
+  const providers = [
+    // Provider 1: ip-api.com
+    async () => {
+      const response = await fetch('http://ip-api.com/json/?fields=status,query,country,city,regionName,isp', {
+        signal: AbortSignal.timeout(5000),
+      });
+      const data = await response.json();
+      if (data.status === 'success') {
+        return {
+          ip: data.query,
+          country: data.country,
+          city: data.city,
+          region: data.regionName,
+          isp: data.isp,
+        };
+      }
+      throw new Error('API returned non-success status');
+    },
+    // Provider 2: ipapi.co
+    async () => {
+      const response = await fetch('https://ipapi.co/json/', {
+        signal: AbortSignal.timeout(5000),
+      });
+      const data = await response.json();
+      return {
+        ip: data.ip,
+        country: data.country_name,
+        city: data.city,
+        region: data.region,
+        isp: data.org || 'Unknown',
+      };
+    },
+    // Provider 3: ipwhois.io
+    async () => {
+      const response = await fetch('https://ipwho.is/', {
+        signal: AbortSignal.timeout(5000),
+      });
+      const data = await response.json();
+      if (data.success) {
+        return {
+          ip: data.ip,
+          country: data.country,
+          city: data.city,
+          region: data.region,
+          isp: data.connection?.isp || 'Unknown',
+        };
+      }
+      throw new Error('API returned non-success status');
+    },
+  ];
+
+  // Try each provider
+  for (const provider of providers) {
+    try {
+      const result = await provider();
+      
+      // Get network info
+      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
+      const effectiveType = connection?.effectiveType || 'unknown';
+      const downlink = connection?.downlink;
+      
+      return {
+        ...result,
+        speed: typeof downlink === 'number' ? `${downlink} Mbps` : 'N/A',
+        connectionType: effectiveType,
+      };
+    } catch (error) {
+      console.warn('Geolocation provider failed:', error);
+      continue;
+    }
+  }
+
+  // Fallback
+  return {
+    ip: 'Unknown',
+    country: 'Unknown',
+    city: 'Unknown',
+    region: 'Unknown',
+    isp: 'Unknown',
+    speed: 'N/A',
+    connectionType: 'unknown',
+  };
+}
+
 export default function AdvancedLoadingScreen({ onComplete }: AdvancedLoadingScreenProps) {
   const [visitorInfo, setVisitorInfo] = useState<VisitorInfo | null>(null);
   const [isComplete, setIsComplete] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Use tRPC query to fetch visitor info from backend
-  const { data: geoData } = trpc.visitor.getInfo.useQuery();
-
   useEffect(() => {
-    if (geoData) {
-      // Get network information
-      const connection = (navigator as any).connection || (navigator as any).mozConnection || (navigator as any).webkitConnection;
-      const effectiveType = connection?.effectiveType || 'unknown';
-      const downlink = connection?.downlink || 'N/A';
-
-      const info: VisitorInfo = {
-        ip: geoData.ip || 'Unknown',
-        country: geoData.country || 'Unknown',
-        city: geoData.city || 'Unknown',
-        region: geoData.region || 'Unknown',
-        isp: geoData.isp || 'Unknown',
-        speed: typeof downlink === 'number' ? `${downlink} Mbps` : 'N/A',
-        connectionType: effectiveType,
-      };
-
+    // Fetch visitor info from public API
+    fetchVisitorInfo().then((info) => {
       setVisitorInfo(info);
       setLoading(false);
 
@@ -79,8 +147,8 @@ export default function AdvancedLoadingScreen({ onComplete }: AdvancedLoadingScr
       }, 6000);
 
       return () => clearTimeout(completeTimer);
-    }
-  }, [geoData, onComplete]);
+    });
+  }, [onComplete]);
 
   // Fallback timeout in case data doesn't load
   useEffect(() => {
