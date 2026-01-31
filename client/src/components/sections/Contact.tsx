@@ -55,10 +55,10 @@ export default function Contact() {
           <div className="text-magenta-400 font-mono text-sm tracking-widest uppercase mb-4">
             {'> CONTACT'}
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white glow-text-bright mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white glow-text-bright mb-4">
             Get In Touch
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
             Have a project in mind or want to discuss cybersecurity? Reach out via email.
           </p>
         </motion.div>
@@ -72,12 +72,12 @@ export default function Contact() {
           >
             <a
               href="mailto:istiak.ahmed.tj@gmail.com"
-              className="flex items-center justify-center gap-4 p-6 bg-card border border-cyan-500/30 rounded-lg hover:border-cyan-500 transition-all duration-300 group glow-box hover:glow-box-bright"
+              className="flex items-center justify-center gap-4 p-6 bg-white dark:bg-card border border-cyan-500/30 rounded-lg hover:border-cyan-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
             >
-              <Mail size={24} className="text-cyan-400 group-hover:scale-110 transition-transform" />
+              <Mail size={24} className="text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
               <div className="text-left">
-                <span className="block text-sm font-mono text-cyan-400 mb-1">Email Me</span>
-                <span className="text-white font-mono">istiak.ahmed.tj@gmail.com</span>
+                <span className="block text-sm font-mono text-cyan-600 dark:text-cyan-400 mb-1">Email Me</span>
+                <span className="text-gray-900 dark:text-white font-mono">istiak.ahmed.tj@gmail.com</span>
               </div>
             </a>
           </motion.div>

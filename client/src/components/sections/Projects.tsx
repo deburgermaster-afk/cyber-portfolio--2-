@@ -18,8 +18,8 @@ const projects: Project[] = [
     name: 'OpinionsTracker',
     description: 'Social media analytics platform',
     languages: ['React', 'Node.js', 'PostgreSQL'],
-    x: 15,
-    y: 20,
+    x: 12,
+    y: 18,
     size: 'lg',
     color: 'cyan',
   },
@@ -28,8 +28,8 @@ const projects: Project[] = [
     name: 'MobileTok',
     description: 'E-commerce mobile app',
     languages: ['React Native', 'Firebase'],
-    x: 75,
-    y: 15,
+    x: 78,
+    y: 12,
     size: 'lg',
     color: 'magenta',
   },
@@ -38,8 +38,8 @@ const projects: Project[] = [
     name: 'UYHO',
     description: 'Social organization platform',
     languages: ['Next.js', 'MongoDB', 'AWS'],
-    x: 50,
-    y: 45,
+    x: 45,
+    y: 42,
     size: 'lg',
     color: 'cyan',
   },
@@ -48,8 +48,8 @@ const projects: Project[] = [
     name: 'SecureVault',
     description: 'Password manager',
     languages: ['Python', 'Cryptography'],
-    x: 25,
-    y: 60,
+    x: 22,
+    y: 55,
     size: 'md',
     color: 'magenta',
   },
@@ -58,8 +58,8 @@ const projects: Project[] = [
     name: 'NetScan Pro',
     description: 'Network security scanner',
     languages: ['Python', 'Nmap', 'SQLite'],
-    x: 85,
-    y: 50,
+    x: 88,
+    y: 48,
     size: 'md',
     color: 'cyan',
   },
@@ -68,8 +68,8 @@ const projects: Project[] = [
     name: 'AI Assistant',
     description: 'Custom AI chatbot',
     languages: ['TypeScript', 'OpenAI', 'Redis'],
-    x: 40,
-    y: 75,
+    x: 35,
+    y: 72,
     size: 'md',
     color: 'magenta',
   },
@@ -78,8 +78,8 @@ const projects: Project[] = [
     name: 'DataFlow',
     description: 'ETL pipeline tool',
     languages: ['Go', 'Kafka'],
-    x: 70,
-    y: 80,
+    x: 68,
+    y: 78,
     size: 'sm',
     color: 'cyan',
   },
@@ -88,8 +88,8 @@ const projects: Project[] = [
     name: 'CloudDeploy',
     description: 'CI/CD automation',
     languages: ['Docker', 'Kubernetes'],
-    x: 10,
-    y: 85,
+    x: 8,
+    y: 82,
     size: 'sm',
     color: 'magenta',
   },
@@ -98,8 +98,8 @@ const projects: Project[] = [
     name: 'ThreatDetect',
     description: 'Malware analysis tool',
     languages: ['C++', 'Assembly'],
-    x: 55,
-    y: 25,
+    x: 58,
+    y: 22,
     size: 'sm',
     color: 'cyan',
   },
@@ -108,8 +108,8 @@ const projects: Project[] = [
     name: 'API Gateway',
     description: 'Microservices router',
     languages: ['Rust', 'gRPC'],
-    x: 30,
-    y: 35,
+    x: 28,
+    y: 32,
     size: 'sm',
     color: 'magenta',
   },
@@ -118,8 +118,8 @@ const projects: Project[] = [
     name: 'LogMonitor',
     description: 'Real-time log analyzer',
     languages: ['Elasticsearch', 'Python'],
-    x: 90,
-    y: 30,
+    x: 92,
+    y: 28,
     size: 'sm',
     color: 'cyan',
   },
@@ -129,7 +129,107 @@ const projects: Project[] = [
     description: 'Crypto wallet app',
     languages: ['Solidity', 'Web3.js'],
     x: 5,
-    y: 45,
+    y: 42,
+    size: 'sm',
+    color: 'magenta',
+  },
+  {
+    id: 13,
+    name: 'SmartHome Hub',
+    description: 'IoT device controller',
+    languages: ['Python', 'MQTT', 'React'],
+    x: 65,
+    y: 58,
+    size: 'md',
+    color: 'cyan',
+  },
+  {
+    id: 14,
+    name: 'CyberShield',
+    description: 'Firewall management system',
+    languages: ['Go', 'eBPF', 'Linux'],
+    x: 18,
+    y: 88,
+    size: 'sm',
+    color: 'magenta',
+  },
+  {
+    id: 15,
+    name: 'MediaStream',
+    description: 'Video streaming platform',
+    languages: ['FFmpeg', 'Node.js', 'HLS'],
+    x: 82,
+    y: 68,
+    size: 'md',
+    color: 'cyan',
+  },
+  {
+    id: 16,
+    name: 'InventoryPro',
+    description: 'Stock management system',
+    languages: ['Laravel', 'MySQL', 'Vue'],
+    x: 48,
+    y: 88,
+    size: 'sm',
+    color: 'magenta',
+  },
+  {
+    id: 17,
+    name: 'VoiceAuth',
+    description: 'Voice authentication API',
+    languages: ['Python', 'TensorFlow', 'FastAPI'],
+    x: 38,
+    y: 8,
+    size: 'sm',
+    color: 'cyan',
+  },
+  {
+    id: 18,
+    name: 'DocuSign Clone',
+    description: 'Digital signature platform',
+    languages: ['React', 'Node.js', 'PDF.js'],
+    x: 72,
+    y: 35,
+    size: 'sm',
+    color: 'magenta',
+  },
+  {
+    id: 19,
+    name: 'GameLeaderboard',
+    description: 'Real-time gaming stats',
+    languages: ['Socket.io', 'Redis', 'React'],
+    x: 55,
+    y: 65,
+    size: 'sm',
+    color: 'cyan',
+  },
+  {
+    id: 20,
+    name: 'PaymentGateway',
+    description: 'Secure payment processor',
+    languages: ['Java', 'Spring', 'Stripe'],
+    x: 15,
+    y: 68,
+    size: 'md',
+    color: 'magenta',
+  },
+  {
+    id: 21,
+    name: 'HealthTracker',
+    description: 'Fitness & health app',
+    languages: ['Flutter', 'Firebase', 'HealthKit'],
+    x: 88,
+    y: 85,
+    size: 'sm',
+    color: 'cyan',
+  },
+  {
+    id: 22,
+    name: 'CodeReview Bot',
+    description: 'Automated PR reviewer',
+    languages: ['Python', 'GitHub API', 'OpenAI'],
+    x: 25,
+    y: 12,
     size: 'sm',
     color: 'magenta',
   },
@@ -183,11 +283,19 @@ const ProjectNode = ({ project, isVisible }: { project: Project; isVisible: bool
     magenta: 'bg-magenta-400/30',
   };
 
+  const textColorClasses = {
+    cyan: 'text-cyan-400',
+    magenta: 'text-magenta-400',
+  };
+
+  // Determine label position based on node position
+  const labelPosition = project.x > 50 ? 'right' : 'left';
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0 }}
       animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
-      transition={{ duration: 0.5, delay: project.id * 0.1 }}
+      transition={{ duration: 0.5, delay: project.id * 0.05 }}
       className="absolute cursor-pointer group"
       style={{ left: `${project.x}%`, top: `${project.y}%`, transform: 'translate(-50%, -50%)' }}
       onMouseEnter={() => setIsHovered(true)}
@@ -205,6 +313,17 @@ const ProjectNode = ({ project, isVisible }: { project: Project; isVisible: bool
         className={`relative ${sizeClasses[project.size]} ${colorClasses[project.color as keyof typeof colorClasses]} rounded-full shadow-lg`}
       />
       
+      {/* Project name label - always visible */}
+      <div 
+        className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap pointer-events-none ${
+          labelPosition === 'left' ? 'right-full mr-2' : 'left-full ml-2'
+        }`}
+      >
+        <span className={`text-xs font-mono ${textColorClasses[project.color as keyof typeof textColorClasses]} opacity-70 group-hover:opacity-100 transition-opacity`}>
+          {project.name}
+        </span>
+      </div>
+      
       {/* Pulse animation for large nodes */}
       {project.size === 'lg' && (
         <motion.div
@@ -214,13 +333,13 @@ const ProjectNode = ({ project, isVisible }: { project: Project; isVisible: bool
         />
       )}
       
-      {/* Tooltip */}
+      {/* Tooltip on hover - shows full details */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
         className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 pointer-events-none"
       >
-        <div className="bg-card border border-cyan-500/30 rounded-lg p-4 shadow-xl min-w-[200px] glow-box">
+        <div className="bg-gray-900 dark:bg-card border border-cyan-500/30 rounded-lg p-4 shadow-xl min-w-[200px] glow-box">
           <h4 className="text-white font-bold font-mono mb-1">{project.name}</h4>
           <p className="text-gray-400 text-xs mb-2">{project.description}</p>
           <div className="flex flex-wrap gap-1">
@@ -288,11 +407,14 @@ export default function Projects() {
           <div className="text-magenta-400 font-mono text-sm tracking-widest uppercase mb-4">
             {'> PROJECT NETWORK'}
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-white glow-text-bright mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white glow-text-bright mb-4">
             My Projects
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-2">
             Explore the constellation of projects I've built. Hover over each node to discover more.
+          </p>
+          <p className="text-cyan-600 dark:text-cyan-400 text-sm font-mono animate-pulse">
+            ✨ Click or hover on dots to view project details
           </p>
         </motion.div>
 
