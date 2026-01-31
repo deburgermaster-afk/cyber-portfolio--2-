@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail } from 'lucide-react';
+import { Mail, Globe } from 'lucide-react';
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -59,11 +59,11 @@ export default function Contact() {
             Get In Touch
           </h2>
           <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Have a project in mind or want to discuss cybersecurity? Reach out via email.
+            Have a project in mind or want to discuss cybersecurity? Reach out via email or my company.
           </p>
         </motion.div>
 
-        <div className="flex justify-center">
+        <div className="flex flex-col md:flex-row justify-center gap-6">
           <motion.div
             variants={itemVariants}
             initial="hidden"
@@ -78,6 +78,26 @@ export default function Contact() {
               <div className="text-left">
                 <span className="block text-sm font-mono text-cyan-600 dark:text-cyan-400 mb-1">Email Me</span>
                 <span className="text-gray-900 dark:text-white font-mono">istiak.ahmed.tj@gmail.com</span>
+              </div>
+            </a>
+          </motion.div>
+
+          <motion.div
+            variants={itemVariants}
+            initial="hidden"
+            animate={isVisible ? 'visible' : 'hidden'}
+            className="max-w-md w-full"
+          >
+            <a
+              href="https://xeroxit.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-4 p-6 bg-white dark:bg-card border border-magenta-500/30 rounded-lg hover:border-magenta-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
+            >
+              <Globe size={24} className="text-magenta-600 dark:text-magenta-400 group-hover:scale-110 transition-transform" />
+              <div className="text-left">
+                <span className="block text-sm font-mono text-magenta-600 dark:text-magenta-400 mb-1">My Company</span>
+                <span className="text-gray-900 dark:text-white font-mono">xeroxit.net</span>
               </div>
             </a>
           </motion.div>
