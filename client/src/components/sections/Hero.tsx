@@ -1,6 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Globe, Smartphone, Server, Palette, Network } from 'lucide-react';
 import Typewriter from '@/components/Typewriter';
+
+// React icon
+const ReactIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <circle cx="12" cy="12" r="2" />
+    <ellipse cx="12" cy="12" rx="9" ry="3.5" fill="none" stroke="currentColor" strokeWidth="1" />
+    <ellipse cx="12" cy="12" rx="9" ry="3.5" fill="none" stroke="currentColor" strokeWidth="1" transform="rotate(60 12 12)" />
+    <ellipse cx="12" cy="12" rx="9" ry="3.5" fill="none" stroke="currentColor" strokeWidth="1" transform="rotate(120 12 12)" />
+  </svg>
+);
+
+// Flutter icon
+const FlutterIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
+    <path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357L14.314 0zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z" />
+  </svg>
+);
 
 export default function Hero() {
   const [isVisible, setIsVisible] = useState(false);
@@ -107,6 +125,38 @@ export default function Hero() {
                   >
                     BSC- KIT | CISCO NET AC. | MELB, AUS
                   </motion.p>
+                  
+                  {/* Tech icons row */}
+                  <motion.div
+                    variants={itemVariants}
+                    className="flex items-center gap-3 flex-wrap"
+                  >
+                    <div className="flex items-center gap-1 text-cyan-600 dark:text-cyan-400" title="Web Development">
+                      <Globe size={16} />
+                    </div>
+                    <div className="flex items-center gap-1 text-blue-600 dark:text-blue-400" title="Cross Platform Apps">
+                      <Smartphone size={16} />
+                    </div>
+                    <div className="flex items-center gap-1 text-green-600 dark:text-green-400" title="Backend Development">
+                      <Server size={16} />
+                    </div>
+                    <div className="flex items-center gap-1 text-pink-600 dark:text-pink-400" title="Design">
+                      <Palette size={16} />
+                    </div>
+                    <div className="flex items-center gap-1 text-cyan-600 dark:text-cyan-400" title="React">
+                      <ReactIcon />
+                    </div>
+                    <div className="flex items-center gap-1 text-blue-500 dark:text-blue-400" title="Flutter">
+                      <FlutterIcon />
+                    </div>
+                    <div className="flex items-center gap-1 text-orange-600 dark:text-orange-400" title="Network">
+                      <Network size={16} />
+                    </div>
+                    <span className="text-xs font-mono text-emerald-600 dark:text-emerald-400 px-2 py-0.5 bg-emerald-100 dark:bg-emerald-900/30 rounded">
+                      256-bit Military Grade Security
+                    </span>
+                  </motion.div>
+
                   <motion.p
                     variants={itemVariants}
                     className="text-xl text-gray-700 dark:text-gray-300 max-w-lg leading-relaxed font-light"

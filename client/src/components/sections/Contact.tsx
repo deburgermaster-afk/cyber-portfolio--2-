@@ -1,6 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Globe } from 'lucide-react';
+import { Mail, Globe, Monitor, Smartphone, Server, Palette, Shield } from 'lucide-react';
+
+// React icon (simple custom SVG)
+const ReactIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+    <circle cx="12" cy="12" r="2.5" />
+    <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" strokeWidth="1.5" />
+    <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" strokeWidth="1.5" transform="rotate(60 12 12)" />
+    <ellipse cx="12" cy="12" rx="10" ry="4" fill="none" stroke="currentColor" strokeWidth="1.5" transform="rotate(120 12 12)" />
+  </svg>
+);
+
+// Flutter icon (simple custom SVG)
+const FlutterIcon = () => (
+  <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+    <path d="M14.314 0L2.3 12 6 15.7 21.684.013h-7.357L14.314 0zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z" />
+  </svg>
+);
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false);
@@ -63,21 +80,20 @@ export default function Contact() {
           </p>
         </motion.div>
 
-        <div className="flex flex-col md:flex-row justify-center gap-6">
+        <div className="flex flex-row justify-center items-center gap-4">
           <motion.div
             variants={itemVariants}
             initial="hidden"
             animate={isVisible ? 'visible' : 'hidden'}
-            className="max-w-md w-full"
           >
             <a
               href="mailto:istiak.ahmed.tj@gmail.com"
-              className="flex items-center justify-center gap-4 p-6 bg-white dark:bg-card border border-cyan-500/30 rounded-lg hover:border-cyan-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
+              className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-card border border-cyan-500/30 rounded-lg hover:border-cyan-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
             >
-              <Mail size={24} className="text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
+              <Mail size={20} className="text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
               <div className="text-left">
-                <span className="block text-sm font-mono text-cyan-600 dark:text-cyan-400 mb-1">Email Me</span>
-                <span className="text-gray-900 dark:text-white font-mono">istiak.ahmed.tj@gmail.com</span>
+                <span className="block text-xs font-mono text-cyan-600 dark:text-cyan-400">Email Me</span>
+                <span className="text-gray-900 dark:text-white font-mono text-sm">istiak.ahmed.tj@gmail.com</span>
               </div>
             </a>
           </motion.div>
@@ -86,18 +102,17 @@ export default function Contact() {
             variants={itemVariants}
             initial="hidden"
             animate={isVisible ? 'visible' : 'hidden'}
-            className="max-w-md w-full"
           >
             <a
               href="https://xeroxit.net"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center gap-4 p-6 bg-white dark:bg-card border border-magenta-500/30 rounded-lg hover:border-magenta-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
+              className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-card border border-magenta-500/30 rounded-lg hover:border-magenta-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
             >
-              <Globe size={24} className="text-magenta-600 dark:text-magenta-400 group-hover:scale-110 transition-transform" />
+              <Globe size={20} className="text-magenta-600 dark:text-magenta-400 group-hover:scale-110 transition-transform" />
               <div className="text-left">
-                <span className="block text-sm font-mono text-magenta-600 dark:text-magenta-400 mb-1">My Company</span>
-                <span className="text-gray-900 dark:text-white font-mono">xeroxit.net</span>
+                <span className="block text-xs font-mono text-magenta-600 dark:text-magenta-400">My Company</span>
+                <span className="text-gray-900 dark:text-white font-mono text-sm">xeroxit.net</span>
               </div>
             </a>
           </motion.div>
