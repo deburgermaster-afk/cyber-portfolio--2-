@@ -284,8 +284,8 @@ const ProjectNode = ({ project, isVisible }: { project: Project; isVisible: bool
   };
 
   const textColorClasses = {
-    cyan: 'text-cyan-400',
-    magenta: 'text-magenta-400',
+    cyan: 'text-cyan-600 dark:text-cyan-400',
+    magenta: 'text-magenta-600 dark:text-magenta-400',
   };
 
   // Determine label position based on node position
@@ -339,9 +339,9 @@ const ProjectNode = ({ project, isVisible }: { project: Project; isVisible: bool
         animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
         className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 pointer-events-none"
       >
-        <div className="bg-gray-900 dark:bg-card border border-cyan-500/30 rounded-lg p-4 shadow-xl min-w-[200px] glow-box">
+        <div className="bg-slate-800 dark:bg-card border border-cyan-500/30 rounded-lg p-4 shadow-xl min-w-[200px] glow-box">
           <h4 className="text-white font-bold font-mono mb-1">{project.name}</h4>
-          <p className="text-gray-400 text-xs mb-2">{project.description}</p>
+          <p className="text-gray-300 dark:text-gray-400 text-xs mb-2">{project.description}</p>
           <div className="flex flex-wrap gap-1">
             {project.languages.map((lang, i) => (
               <span
@@ -459,15 +459,15 @@ export default function Projects() {
         >
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
-            <span className="text-gray-400 font-mono text-sm">Major Project</span>
+            <span className="text-gray-700 dark:text-gray-400 font-mono text-sm">Major Project</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-5 h-5 bg-magenta-400 rounded-full shadow-lg shadow-magenta-400/50" />
-            <span className="text-gray-400 font-mono text-sm">Medium Project</span>
+            <span className="text-gray-700 dark:text-gray-400 font-mono text-sm">Medium Project</span>
           </div>
           <div className="flex items-center gap-3">
             <div className="w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
-            <span className="text-gray-400 font-mono text-sm">Small Project</span>
+            <span className="text-gray-700 dark:text-gray-400 font-mono text-sm">Small Project</span>
           </div>
         </motion.div>
 
@@ -484,9 +484,9 @@ export default function Projects() {
             { value: '17', label: 'AI Integrations' },
             { value: '9', label: 'Mobile Apps' },
           ].map((stat, index) => (
-            <div key={index} className="text-center p-6 bg-card border border-cyan-500/20 rounded-lg glow-box">
-              <div className="text-3xl font-bold text-cyan-400 font-mono mb-1">{stat.value}</div>
-              <div className="text-gray-500 text-sm">{stat.label}</div>
+            <div key={index} className="text-center p-6 bg-white dark:bg-card border border-cyan-500/20 rounded-lg shadow-lg dark:glow-box">
+              <div className="text-3xl font-bold text-cyan-600 dark:text-cyan-400 font-mono mb-1">{stat.value}</div>
+              <div className="text-gray-600 dark:text-gray-500 text-sm">{stat.label}</div>
             </div>
           ))}
         </motion.div>
