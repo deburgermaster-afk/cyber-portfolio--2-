@@ -91,7 +91,7 @@ export default function Contact() {
           className="mt-20 pt-8 border-t border-cyan-500/20 text-center text-gray-500 font-mono text-sm"
         >
           <p>{'> SYSTEM STATUS: OPERATIONAL'}</p>
-          <p className="mt-2">© 2024 Cybersecurity Portfolio. All systems secured.</p>
+          <p className="mt-2">© Istiak Ahmed. All rights reserved.</p>
         </motion.div>
       </div>
     </section>

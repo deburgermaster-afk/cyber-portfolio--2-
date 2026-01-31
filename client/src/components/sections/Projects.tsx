@@ -1,40 +1,247 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 
-const featuredProjects = [
+interface Project {
+  id: number;
+  name: string;
+  description: string;
+  languages: string[];
+  x: number;
+  y: number;
+  size: 'sm' | 'md' | 'lg';
+  color: string;
+}
+
+const projects: Project[] = [
   {
-    title: 'OpinionsTracker',
-    subtitle: 'WEB APP COMBO',
-    price: '$5000',
-    color: 'from-blue-500 to-cyan-500',
+    id: 1,
+    name: 'OpinionsTracker',
+    description: 'Social media analytics platform',
+    languages: ['React', 'Node.js', 'PostgreSQL'],
+    x: 15,
+    y: 20,
+    size: 'lg',
+    color: 'cyan',
   },
   {
-    title: 'MobileTok',
-    subtitle: 'Ecommerce Web',
-    price: '$1800',
-    color: 'from-purple-500 to-indigo-500',
+    id: 2,
+    name: 'MobileTok',
+    description: 'E-commerce mobile app',
+    languages: ['React Native', 'Firebase'],
+    x: 75,
+    y: 15,
+    size: 'lg',
+    color: 'magenta',
   },
   {
-    title: 'UYHO',
-    subtitle: 'Social Org Combo',
-    price: '$4900',
-    color: 'from-pink-500 to-rose-500',
+    id: 3,
+    name: 'UYHO',
+    description: 'Social organization platform',
+    languages: ['Next.js', 'MongoDB', 'AWS'],
+    x: 50,
+    y: 45,
+    size: 'lg',
+    color: 'cyan',
+  },
+  {
+    id: 4,
+    name: 'SecureVault',
+    description: 'Password manager',
+    languages: ['Python', 'Cryptography'],
+    x: 25,
+    y: 60,
+    size: 'md',
+    color: 'magenta',
+  },
+  {
+    id: 5,
+    name: 'NetScan Pro',
+    description: 'Network security scanner',
+    languages: ['Python', 'Nmap', 'SQLite'],
+    x: 85,
+    y: 50,
+    size: 'md',
+    color: 'cyan',
+  },
+  {
+    id: 6,
+    name: 'AI Assistant',
+    description: 'Custom AI chatbot',
+    languages: ['TypeScript', 'OpenAI', 'Redis'],
+    x: 40,
+    y: 75,
+    size: 'md',
+    color: 'magenta',
+  },
+  {
+    id: 7,
+    name: 'DataFlow',
+    description: 'ETL pipeline tool',
+    languages: ['Go', 'Kafka'],
+    x: 70,
+    y: 80,
+    size: 'sm',
+    color: 'cyan',
+  },
+  {
+    id: 8,
+    name: 'CloudDeploy',
+    description: 'CI/CD automation',
+    languages: ['Docker', 'Kubernetes'],
+    x: 10,
+    y: 85,
+    size: 'sm',
+    color: 'magenta',
+  },
+  {
+    id: 9,
+    name: 'ThreatDetect',
+    description: 'Malware analysis tool',
+    languages: ['C++', 'Assembly'],
+    x: 55,
+    y: 25,
+    size: 'sm',
+    color: 'cyan',
+  },
+  {
+    id: 10,
+    name: 'API Gateway',
+    description: 'Microservices router',
+    languages: ['Rust', 'gRPC'],
+    x: 30,
+    y: 35,
+    size: 'sm',
+    color: 'magenta',
+  },
+  {
+    id: 11,
+    name: 'LogMonitor',
+    description: 'Real-time log analyzer',
+    languages: ['Elasticsearch', 'Python'],
+    x: 90,
+    y: 30,
+    size: 'sm',
+    color: 'cyan',
+  },
+  {
+    id: 12,
+    name: 'BlockChain Wallet',
+    description: 'Crypto wallet app',
+    languages: ['Solidity', 'Web3.js'],
+    x: 5,
+    y: 45,
+    size: 'sm',
+    color: 'magenta',
   },
 ];
 
-const projectStats = [
-  { label: 'Finished Projects', value: 57, color: 'from-green-500 to-emerald-500' },
-  { label: 'Live Projects', value: 33, color: 'from-blue-500 to-cyan-500' },
-  { label: 'Client Terminated', value: 20, color: 'from-orange-500 to-red-500' },
-];
+// Generate connections between nearby projects
+const generateConnections = (projects: Project[]) => {
+  const connections: { from: Project; to: Project }[] = [];
+  
+  projects.forEach((p1, i) => {
+    projects.forEach((p2, j) => {
+      if (i < j) {
+        const distance = Math.sqrt(
+          Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2)
+        );
+        // Connect if within range
+        if (distance < 40) {
+          connections.push({ from: p1, to: p2 });
+        }
+      }
+    });
+  });
+  
+  return connections;
+};
 
-const projectCategories = [
-  { label: '7+ General Websites', icon: '🌐' },
-  { label: '9 Android Apps', icon: '📱' },
-  { label: '3 Custom Agents', icon: '🤖' },
-  { label: '17 AI Integrations', icon: '⚡' },
-  { label: '100+ Design Updates', icon: '🎨' },
-];
+const connections = generateConnections(projects);
+
+const ProjectNode = ({ project, isVisible }: { project: Project; isVisible: boolean }) => {
+  const [isHovered, setIsHovered] = useState(false);
+  
+  const sizeClasses = {
+    sm: 'w-3 h-3',
+    md: 'w-5 h-5',
+    lg: 'w-7 h-7',
+  };
+  
+  const glowSize = {
+    sm: 'w-6 h-6',
+    md: 'w-10 h-10',
+    lg: 'w-14 h-14',
+  };
+  
+  const colorClasses = {
+    cyan: 'bg-cyan-400 shadow-cyan-400/50',
+    magenta: 'bg-magenta-400 shadow-magenta-400/50',
+  };
+  
+  const glowClasses = {
+    cyan: 'bg-cyan-400/30',
+    magenta: 'bg-magenta-400/30',
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0 }}
+      animate={isVisible ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }}
+      transition={{ duration: 0.5, delay: project.id * 0.1 }}
+      className="absolute cursor-pointer group"
+      style={{ left: `${project.x}%`, top: `${project.y}%`, transform: 'translate(-50%, -50%)' }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Glow effect */}
+      <motion.div
+        animate={{ scale: isHovered ? 1.5 : 1, opacity: isHovered ? 0.8 : 0.3 }}
+        className={`absolute ${glowSize[project.size]} ${glowClasses[project.color as keyof typeof glowClasses]} rounded-full blur-md -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2`}
+      />
+      
+      {/* Node */}
+      <motion.div
+        animate={{ scale: isHovered ? 1.3 : 1 }}
+        className={`relative ${sizeClasses[project.size]} ${colorClasses[project.color as keyof typeof colorClasses]} rounded-full shadow-lg`}
+      />
+      
+      {/* Pulse animation for large nodes */}
+      {project.size === 'lg' && (
+        <motion.div
+          animate={{ scale: [1, 2, 1], opacity: [0.5, 0, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className={`absolute ${sizeClasses[project.size]} ${colorClasses[project.color as keyof typeof colorClasses]} rounded-full opacity-50 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2`}
+        />
+      )}
+      
+      {/* Tooltip */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
+        className="absolute left-1/2 -translate-x-1/2 top-full mt-3 z-50 pointer-events-none"
+      >
+        <div className="bg-card border border-cyan-500/30 rounded-lg p-4 shadow-xl min-w-[200px] glow-box">
+          <h4 className="text-white font-bold font-mono mb-1">{project.name}</h4>
+          <p className="text-gray-400 text-xs mb-2">{project.description}</p>
+          <div className="flex flex-wrap gap-1">
+            {project.languages.map((lang, i) => (
+              <span
+                key={i}
+                className={`text-xs px-2 py-0.5 rounded-full ${
+                  project.color === 'cyan' 
+                    ? 'bg-cyan-500/20 text-cyan-400' 
+                    : 'bg-magenta-500/20 text-magenta-400'
+                }`}
+              >
+                {lang}
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
 
 export default function Projects() {
   const [isVisible, setIsVisible] = useState(false);
@@ -47,50 +254,26 @@ export default function Projects() {
           setIsVisible(true);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.1 }
     );
 
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 },
-    },
-  };
-
-  const statVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.6 },
-    },
-  };
-
   return (
-    <section id="projects" ref={ref} className="relative py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
-      {/* Background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
-          className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-gradient-to-br from-blue-200/30 to-purple-200/30 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full blur-3xl"
+    <section id="projects" ref={ref} className="relative py-32 overflow-hidden bg-background">
+      {/* Grid background */}
+      <div className="absolute inset-0 opacity-10">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px',
+          }}
         />
       </div>
 
@@ -100,117 +283,90 @@ export default function Projects() {
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
-          <h2 className="text-5xl lg:text-6xl font-bold bg-gradient-to-r from-purple-900 via-blue-900 to-purple-900 dark:from-purple-300 dark:via-blue-300 dark:to-purple-300 bg-clip-text text-transparent mb-4">
-            My Work
+          <div className="text-magenta-400 font-mono text-sm tracking-widest uppercase mb-4">
+            {'> PROJECT NETWORK'}
+          </div>
+          <h2 className="text-4xl lg:text-5xl font-bold text-white glow-text-bright mb-4">
+            My Projects
           </h2>
-          <p className="text-gray-700 dark:text-gray-300 max-w-2xl mx-auto text-lg">
-            A showcase of completed projects and professional achievements across multiple domains.
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Explore the constellation of projects I've built. Hover over each node to discover more.
           </p>
         </motion.div>
 
-        {/* Project Statistics */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isVisible ? 'visible' : 'hidden'}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
-        >
-          {projectStats.map((stat, index) => (
-            <motion.div
-              key={index}
-              variants={statVariants}
-              className="relative group"
-            >
-              <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} rounded-2xl opacity-0 group-hover:opacity-10 blur transition-all duration-300`} />
-              <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 shadow-lg group-hover:shadow-2xl transition-all duration-300 text-center">
-                <div className={`text-5xl font-bold bg-gradient-to-r ${stat.color} bg-clip-text text-transparent mb-2`}>
-                  {stat.value}
-                </div>
-                <p className="text-gray-600 dark:text-gray-400 font-semibold">
-                  {stat.label}
-                </p>
-              </div>
-            </motion.div>
+        {/* Spider Net / Constellation */}
+        <div className="relative h-[600px] md:h-[700px] w-full">
+          {/* SVG for connection lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none">
+            {connections.map((conn, index) => (
+              <motion.line
+                key={index}
+                x1={`${conn.from.x}%`}
+                y1={`${conn.from.y}%`}
+                x2={`${conn.to.x}%`}
+                y2={`${conn.to.y}%`}
+                stroke="url(#lineGradient)"
+                strokeWidth="1"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={isVisible ? { pathLength: 1, opacity: 0.3 } : { pathLength: 0, opacity: 0 }}
+                transition={{ duration: 1, delay: index * 0.05 }}
+              />
+            ))}
+            <defs>
+              <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#00ffff" />
+                <stop offset="100%" stopColor="#ff00ff" />
+              </linearGradient>
+            </defs>
+          </svg>
+
+          {/* Project nodes */}
+          {projects.map((project) => (
+            <ProjectNode key={project.id} project={project} isVisible={isVisible} />
           ))}
-        </motion.div>
+        </div>
 
-        {/* Featured Projects */}
+        {/* Legend */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="mb-20"
+          transition={{ duration: 0.8, delay: 1.5 }}
+          className="flex flex-wrap justify-center gap-8 mt-12"
         >
-          <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">
-            Featured Projects
-          </h3>
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isVisible ? 'visible' : 'hidden'}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-          >
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ y: -10 }}
-                className="group relative"
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${project.color} rounded-2xl opacity-0 group-hover:opacity-10 blur transition-all duration-300`} />
-                <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-8 border border-gray-200 dark:border-slate-700 shadow-lg group-hover:shadow-2xl transition-all duration-300 h-full flex flex-col justify-between">
-                  {/* Header */}
-                  <div className="mb-6">
-                    <div className={`inline-block w-12 h-12 bg-gradient-to-br ${project.color} rounded-lg mb-4`} />
-                    <h4 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
-                      {project.title}
-                    </h4>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 font-semibold">
-                      {project.subtitle}
-                    </p>
-                  </div>
-
-                  {/* Price */}
-                  <div className={`text-3xl font-bold bg-gradient-to-r ${project.color} bg-clip-text text-transparent`}>
-                    {project.price}
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
+            <span className="text-gray-400 font-mono text-sm">Major Project</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-5 h-5 bg-magenta-400 rounded-full shadow-lg shadow-magenta-400/50" />
+            <span className="text-gray-400 font-mono text-sm">Medium Project</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-3 h-3 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50" />
+            <span className="text-gray-400 font-mono text-sm">Small Project</span>
+          </div>
         </motion.div>
 
-        {/* Project Categories */}
+        {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 1.8 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16"
         >
-          <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center">
-            Project Categories
-          </h3>
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isVisible ? 'visible' : 'hidden'}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6"
-          >
-            {projectCategories.map((category, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-                className="bg-white dark:bg-slate-800 rounded-xl p-6 border border-gray-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all duration-300 text-center"
-              >
-                <div className="text-4xl mb-3">{category.icon}</div>
-                <p className="text-gray-900 dark:text-white font-semibold">
-                  {category.label}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
+          {[
+            { value: '57+', label: 'Projects Completed' },
+            { value: '33', label: 'Live & Running' },
+            { value: '17', label: 'AI Integrations' },
+            { value: '9', label: 'Mobile Apps' },
+          ].map((stat, index) => (
+            <div key={index} className="text-center p-6 bg-card border border-cyan-500/20 rounded-lg glow-box">
+              <div className="text-3xl font-bold text-cyan-400 font-mono mb-1">{stat.value}</div>
+              <div className="text-gray-500 text-sm">{stat.label}</div>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>
