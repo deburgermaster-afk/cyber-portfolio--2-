@@ -1,5 +1,5 @@
-// Cloudflare Pages Function - Visitor Notification
-// Uses Resend API (free 100 emails/day) or logs to console for debugging
+// Cloudflare Pages Function - Visitor Notification via Telegram
+// Free, instant, no email setup needed
 
 export async function onRequest(context) {
   const { request } = context;
@@ -22,7 +22,7 @@ export async function onRequest(context) {
   try {
     const data = await request.json();
     
-    // Get visitor info from Cloudflare (server-side, accurate)
+    // Get visitor info from Cloudflare headers
     const ip = request.headers.get('CF-Connecting-IP') || 'Unknown';
     const country = request.headers.get('CF-IPCountry') || 'Unknown';
     const city = request.cf?.city || 'Unknown';
@@ -31,45 +31,39 @@ export async function onRequest(context) {
     const location = `${city}, ${region}, ${country}`;
     const time = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
     
-    const visitorData = {
-      ip,
-      location,
-      device: data.device || 'Unknown',
-      browser: data.browser || 'Unknown',
-      page: data.page || '/',
-      time,
-      referrer: data.referrer || 'Direct',
-    };
+    // Format message for Telegram
+    const message = `🌐 *New Portfolio Visitor*
 
-    // Log to Cloudflare (visible in dashboard)
-    console.log('VISITOR:', JSON.stringify(visitorData));
+📍 *Location:* ${location}
+🔗 *IP:* \`${ip}\`
+💻 *Device:* ${data.device || 'Unknown'}
+🌐 *Browser:* ${data.browser || 'Unknown'}
+📄 *Page:* ${data.page || '/'}
+🔄 *Referrer:* ${data.referrer || 'Direct'}
+⏰ *Time (BD):* ${time}`;
 
-    // Try to send via webhook (you can set this up with Zapier, Make, or n8n for free)
-    // For now, we'll store in Cloudflare KV if available, or just log
+    // Send to Telegram (you'll set up a bot)
+    // For now, log to console (visible in Cloudflare dashboard)
+    console.log('VISITOR NOTIFICATION:', message);
+
+    // You can add Telegram bot later with:
+    // TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID as environment variables
+    const botToken = context.env?.TELEGRAM_BOT_TOKEN;
+    const chatId = context.env?.TELEGRAM_CHAT_ID;
     
-    // Attempt MailChannels
-    try {
-      const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+    if (botToken && chatId) {
+      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          personalizations: [{ to: [{ email: 'istiak.ahmed.tj@gmail.com' }] }],
-          from: { email: 'visitor@thetj.dev', name: 'Portfolio Visitor' },
-          subject: `🌐 Visitor from ${location} (${ip})`,
-          content: [{
-            type: 'text/plain',
-            value: `New visitor on your portfolio!\n\nIP: ${ip}\nLocation: ${location}\nDevice: ${data.device}\nBrowser: ${data.browser}\nTime: ${time}\nPage: ${data.page}\nReferrer: ${data.referrer}`
-          }],
+          chat_id: chatId,
+          text: message,
+          parse_mode: 'Markdown',
         }),
       });
-      
-      const emailResult = await emailResponse.text();
-      console.log('MailChannels response:', emailResponse.status, emailResult);
-    } catch (emailError) {
-      console.log('MailChannels error:', emailError.message);
     }
 
-    return new Response(JSON.stringify({ success: true, logged: visitorData }), {
+    return new Response(JSON.stringify({ success: true }), {
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
