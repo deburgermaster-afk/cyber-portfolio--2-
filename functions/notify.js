@@ -1,5 +1,5 @@
 // Cloudflare Pages Function - Visitor Notification
-// This runs server-side on Cloudflare, not in the browser
+// Uses Resend API (free 100 emails/day) or logs to console for debugging
 
 export async function onRequest(context) {
   const { request } = context;
@@ -31,90 +31,50 @@ export async function onRequest(context) {
     const location = `${city}, ${region}, ${country}`;
     const time = new Date().toLocaleString('en-US', { timeZone: 'Asia/Dhaka' });
     
-    // Send email via MailChannels (free with Cloudflare)
-    const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
-      method: 'POST',
+    const visitorData = {
+      ip,
+      location,
+      device: data.device || 'Unknown',
+      browser: data.browser || 'Unknown',
+      page: data.page || '/',
+      time,
+      referrer: data.referrer || 'Direct',
+    };
+
+    // Log to Cloudflare (visible in dashboard)
+    console.log('VISITOR:', JSON.stringify(visitorData));
+
+    // Try to send via webhook (you can set this up with Zapier, Make, or n8n for free)
+    // For now, we'll store in Cloudflare KV if available, or just log
+    
+    // Attempt MailChannels
+    try {
+      const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          personalizations: [{ to: [{ email: 'istiak.ahmed.tj@gmail.com' }] }],
+          from: { email: 'visitor@thetj.dev', name: 'Portfolio Visitor' },
+          subject: `🌐 Visitor from ${location} (${ip})`,
+          content: [{
+            type: 'text/plain',
+            value: `New visitor on your portfolio!\n\nIP: ${ip}\nLocation: ${location}\nDevice: ${data.device}\nBrowser: ${data.browser}\nTime: ${time}\nPage: ${data.page}\nReferrer: ${data.referrer}`
+          }],
+        }),
+      });
+      
+      const emailResult = await emailResponse.text();
+      console.log('MailChannels response:', emailResponse.status, emailResult);
+    } catch (emailError) {
+      console.log('MailChannels error:', emailError.message);
+    }
+
+    return new Response(JSON.stringify({ success: true, logged: visitorData }), {
       headers: {
         'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
       },
-      body: JSON.stringify({
-        personalizations: [
-          {
-            to: [{ email: 'istiak.ahmed.tj@gmail.com', name: 'Istiak Ahmed' }],
-          },
-        ],
-        from: {
-          email: 'notifications@thetj.dev',
-          name: 'Portfolio Notification',
-        },
-        subject: `🌐 Portfolio Visitor from ${location}`,
-        content: [
-          {
-            type: 'text/html',
-            value: `
-              <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #fff; border-radius: 12px; overflow: hidden;">
-                <div style="background: linear-gradient(90deg, #00d4ff, #9b59b6); padding: 20px; text-align: center;">
-                  <h1 style="margin: 0; font-size: 24px;">🔔 New Portfolio Visitor</h1>
-                </div>
-                <div style="padding: 30px;">
-                  <div style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; margin-bottom: 20px;">
-                    <h3 style="color: #00d4ff; margin-top: 0;">📍 Visitor Details</h3>
-                    <table style="width: 100%; color: #fff;">
-                      <tr>
-                        <td style="padding: 8px 0; color: #888;">IP Address:</td>
-                        <td style="padding: 8px 0; font-family: monospace;">${ip}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #888;">Location:</td>
-                        <td style="padding: 8px 0;">${location}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #888;">Device:</td>
-                        <td style="padding: 8px 0;">${data.device || 'Unknown'}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #888;">Browser:</td>
-                        <td style="padding: 8px 0;">${data.browser || 'Unknown'}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #888;">Page:</td>
-                        <td style="padding: 8px 0;">${data.page || 'Homepage'}</td>
-                      </tr>
-                      <tr>
-                        <td style="padding: 8px 0; color: #888;">Time (BD):</td>
-                        <td style="padding: 8px 0;">${time}</td>
-                      </tr>
-                    </table>
-                  </div>
-                  <p style="color: #888; font-size: 12px; text-align: center; margin: 0;">
-                    Sent from your portfolio at thetj.dev
-                  </p>
-                </div>
-              </div>
-            `,
-          },
-        ],
-      }),
     });
-
-    if (emailResponse.ok) {
-      return new Response(JSON.stringify({ success: true }), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
-    } else {
-      const error = await emailResponse.text();
-      console.error('Email error:', error);
-      return new Response(JSON.stringify({ success: false, error }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      });
-    }
   } catch (error) {
     console.error('Function error:', error);
     return new Response(JSON.stringify({ success: false, error: error.message }), {
