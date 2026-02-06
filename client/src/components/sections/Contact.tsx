@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Globe, Monitor, Smartphone, Server, Palette, Shield } from 'lucide-react';
+import { Globe, Mail } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 // React icon (simple custom SVG)
 const ReactIcon = () => (
@@ -87,13 +87,13 @@ export default function Contact() {
             animate={isVisible ? 'visible' : 'hidden'}
           >
             <a
-              href="mailto:istiak.ahmed.tj@gmail.com"
+              href="mailto:thetj.dev@gmail.com"
               className="flex items-center gap-3 px-5 py-3 bg-white dark:bg-card border border-cyan-500/30 rounded-lg hover:border-cyan-500 transition-all duration-300 group shadow-lg dark:glow-box hover:shadow-xl dark:hover:glow-box-bright"
             >
               <Mail size={20} className="text-cyan-600 dark:text-cyan-400 group-hover:scale-110 transition-transform" />
               <div className="text-left">
                 <span className="block text-xs font-mono text-cyan-600 dark:text-cyan-400">Email Me</span>
-                <span className="text-gray-900 dark:text-white font-mono text-sm">istiak.ahmed.tj@gmail.com</span>
+                <span className="text-gray-900 dark:text-white font-mono text-sm">thetj.dev@gmail.com</span>
               </div>
             </a>
           </motion.div>
